@@ -1,0 +1,23 @@
+
+{
+  "name": "useful-web/yii2-leaflet-search",
+  "description": "Leaflet search widget for Yii2",
+  "type": "library",
+  "keywords": ["yii2", "leaflet", "search"],
+  "homepage": "https://github.com/UsefulWeb/yii2-leaflet-search",
+  "version" : 0.1,
+  "authors": [
+  {
+    "name": "Vladimir Yazykov",
+    "email": "neizerth@gmail.com"
+  }
+  ],
+  "autoload": {
+    "psr-4": {
+      "usefulweb\\LeafletSearch\\": ""
+    }
+  },
+  "require": {
+    "php": ">=5.3.0"
+  }
+}
