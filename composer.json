@@ -11,6 +11,9 @@
     "email": "neizerth@gmail.com"
   }
   ],
+  "require": {
+    "bower-asset/leaflet-control-geocoder": "*"
+  },
   "autoload": {
     "psr-4": {
       "usefulweb\\LeafletSearch\\": ""
