@@ -6,15 +6,12 @@ namespace usefulweb\LeafletSearch;
 
 class LeafletSearchAsset extends \yii\web\AssetBundle
 {
-  public $css = [
-      'dist/leaflet-search.min.css',
-  ];
+  public $sourcePath = '@vendor/useful-web/yii2-leaflet-search/dist';
   public $js = [
-      'dist/leaflet-search.min.js',
+      'leaflet-search.js',
   ];
+
   public $depends = [
-      // 'frontend\themes\dm1\assets\AngularAsset',
-      // 'frontend\themes\dm1\assets\AngularResourceAsset',
   ];
 }
  ?>

@@ -4,7 +4,7 @@
   "type": "library",
   "keywords": ["yii2", "leaflet", "search"],
   "homepage": "https://github.com/UsefulWeb/yii2-leaflet-search",
-  "version" : 0.1,
+  "version" : "0.1",
   "authors": [
   {
     "name": "Vladimir Yazykov",
@@ -12,14 +12,11 @@
   }
   ],
   "require": {
-    "bower-asset/leaflet-control-geocoder": "*"
+    "php": ">=5.4.0"
   },
   "autoload": {
     "psr-4": {
       "usefulweb\\LeafletSearch\\": ""
     }
-  },
-  "require": {
-    "php": ">=5.3.0"
   }
 }

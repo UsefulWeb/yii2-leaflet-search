@@ -1,43 +1,50 @@
 <?php
-use \yii\widgets\ActiveForm;
-use \yii\helpers\Html;
-
 /**
  *
  */
 namespace usefulweb\LeafletSearch;
 
+use \yii\widgets\ActiveForm;
+use \yii\helpers\Html;
+use \yii\helpers\Json;
+
 class LeafletSearch extends \yii\base\Widget
 {
-  public $id = 'leaflet-search';
   public $longitude;
   public $latitude;
   public $radius;
+  public $options = [];
 
   public function run() {
-      $content = $this->renderWidget();
+    $content = $this->renderWidget();
+    $view = $this->getView();
+    return $content;
   }
 
   public function renderWidget() {
+    $contents = [];
+    $contents[] = Html::tag('div', '', [
+      'id' => $this->id,
+      'data-leaflet-search' => Json::encode($this->options),
+      ]);
+    $contents[] = $this->renderModel($form, $this->longitude);
+    $contents[] =  $this->renderModel($form, $this->latitude);
+    $contents[] =  $this->renderModel($form, $this->radius);
 
-    ob_start();
-    $form = ActiveForm::begin(['id' => $this->id.'-form']);
-
-    echo $this->renderModel($form, $this->longitude);
-    echo $this->renderModel($form, $this->latitude);
-    echo $this->renderModel($form, $this->radius);
-
-    ActiveForm::end();
-
-    return ob_end_clean();
+    return implode("\n", $contents);
   }
 
   public function renderModel($form, $params) {
     if (is_array($params)) {
-
+      if (isset($params['name'])) {
+        return Html::hiddenInput($params['name']);
+      }
+      else {
+        return $form->field($params['model'], $params['attribute'])->hiddenInput();
+      }
     }
     else if (!is_null($params)) {
-      Html::
+      return Html::hiddenInput($params);
     }
   }
 }
