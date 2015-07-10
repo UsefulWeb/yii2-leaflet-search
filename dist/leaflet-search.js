@@ -3,11 +3,6 @@
 /// <reference path="typings/leaflet-search.d.ts"/>
 (function ($) {
     var pluginName = 'leafletSearch';
-    var RadiusControl = L.Control.extend({
-        options: {
-            position: 'bottomright'
-        }
-    });
     var LeafletSearchGeocoder = L.Control.Geocoder.extend({
         initialize: function (options) {
             L.Control.Geocoder.prototype.initialize.call(this, options);
@@ -15,6 +10,16 @@
             $(this.options.longitude + ', ' + this.options.latitude).on('keyup', function () {
                 control._markResult([$latitude.val(), $longitude.val()]);
             });
+            if (this.options.radius != null) {
+                var $radius = $(this.options.radius);
+                $radius.on('keyup', function () {
+                    if (control._radiusLayer == null) {
+                        return;
+                    }
+                    var value = +$(this).val();
+                    control._radius.setRadius(value);
+                });
+            }
         },
         _markResult: function (center) {
             this._map.setView(center);
@@ -23,25 +28,30 @@
             }
             this._geocodeMarker = new L.Marker(center)
                 .addTo(this._map);
+            this._drawRadius(center);
         },
         _geocodeResultSelected: function (result) {
             L.Control.Geocoder.prototype._geocodeResultSelected.call(this, result);
             var $longitude = $(this.options.longitude), $latitude = $(this.options.latitude);
             $latitude.val(result.center.lat);
             $longitude.val(result.center.lng);
+            this._drawRadius(result.center);
+        },
+        _drawRadius: function (center) {
             if (this.options.radius == null) {
                 return;
             }
-            var map = this._map;
             if (this._radiusLayer != null) {
-                map.removeLayer(this._radiusLayer);
+                this._map.removeLayer(this._radiusLayer);
             }
-            else {
-                this._bindRadiusField();
+            var $radius = $(this.options.radius), radius = +$radius.val();
+            if (!radius) {
+                radius = this.options.radiusSize;
+                $radius.val(radius);
             }
             this._radiusLayer = new L.LayerGroup();
-            this._radius = L.circle(result.center, 50).addTo(this._radiusLayer);
-            this._radiusLayer.addTo(map);
+            this._radius = L.circle(center, radius).addTo(this._radiusLayer);
+            this._radiusLayer.addTo(this._map);
         },
         _bindRadiusField: function () {
             var geocoder = this, $field = $(this.options.radiusField);
