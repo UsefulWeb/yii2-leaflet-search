@@ -105,7 +105,8 @@
     _name: string = pluginName;
     _defaults: Object = {
       map : {
-        options : {}
+        options : {},
+        defaultZoom : 10,
       },
       geocoder: {
 
@@ -120,21 +121,24 @@
 
     constructor(element: JQuery, options: any) {
       this.element = element;
-			this.settings = $.extend( {}, this._defaults, options );
+      // deep extend
+			this.settings = $.extend( true, {}, this._defaults, options );
       this.init();
     }
 
     init: Function = function() {
-      var plugin = this;
-
-      $(this.element).css({
-        height: '300px',
-        width: '800px',
-      });
+      var plugin = this,
+          $longitude = $(this.settings.geocoder.longitude),
+          $latitude = $(this.settings.geocoder.latitude),
+          latitude = $latitude.val(),
+          longitude = $longitude.val();
 
       this._map = L.map(this.element, this.settings.map.options);
-      if (this.settings.map.view) {
-        this._map.setView.apply(this._map, this.settings.map.view);
+      if (latitude && longitude) {
+        this._map.setView.call(this._map, [latitude, longitude], this.settings.map.defaultZoom);
+      }
+      else if (this.settings.map.defaultView) {
+        this._map.setView.apply(this._map, this.settings.map.defaultView);
       }
 
       this._geocoder = new LeafletSearchGeocoder(this.settings.geocoder);
@@ -142,9 +146,6 @@
       /** click to latlng coordinates */
       this._map.on('click', function(e) {
           plugin._geocoder._markResult([e.latlng.lat, e.latlng.lng]);
-
-          var $longitude = $(plugin.settings.geocoder.longitude),
-              $latitude = $(plugin.settings.geocoder.latitude);
 
           $latitude.val(e.latlng.lat);
           $longitude.val(e.latlng.lng);

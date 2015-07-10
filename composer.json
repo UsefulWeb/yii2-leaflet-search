@@ -2,9 +2,9 @@
   "name": "useful-web/yii2-leaflet-search",
   "description": "Leaflet search widget for Yii2",
   "type": "library",
-  "keywords": ["yii2", "leaflet", "search"],
+  "keywords": ["yii2", "leaflet", "search", "geocoder"],
   "homepage": "https://github.com/UsefulWeb/yii2-leaflet-search",
-  "version" : "0.1",
+  "version" : "0.2",
   "authors": [
   {
     "name": "Vladimir Yazykov",
